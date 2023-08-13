@@ -26,9 +26,19 @@ const mostBlogs = (blogs) => {
     listOfAuthors.push({ author: key, blogs: value });
   }
 
-  _.sortBy(listOfAuthors, "blogs");
+  return _.last(_.sortBy(listOfAuthors, "blogs"));
+};
 
-  return _.last(listOfAuthors);
+const mostLikes = (blogs) => {
+  if (blogs.length < 1) return null;
+
+  const listOfAuthors = [];
+  for (let [key, value] of Object.entries(_.groupBy(blogs, "author"))) {
+    const likes = totalLikes(value);
+    listOfAuthors.push({ author: key, likes: likes });
+  }
+
+  return _.last(_.sortBy(listOfAuthors, "likes"));
 };
 
 module.exports = {
@@ -36,4 +46,5 @@ module.exports = {
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 };
